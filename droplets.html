@@ -1,0 +1,105 @@
+<!doctype html>
+ 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<style type="text/css">
+		#draggable{
+		width:150px;
+		height:150px;
+		padding: 10px;
+		background: skyblue;
+		border :solid black 2px;
+		position: fixed;
+		margin-top: 32.5%;
+		}
+    </style>
+    <script>
+function randomNumber(max) {
+    
+    var randomNum       = Math.random();
+    var numExpanded     = randomNum * max;
+    var numFloored      = Math.floor(numExpanded);
+    return numFloored;
+}
+function letterpick() {
+    
+    var i=new Image();
+	i.src="drop.jpg";
+	i.style.height= "20px";
+	i.style.width="20px";
+	return i;
+}
+
+function pickposition() {
+	
+	var span            = $("<span/>");
+	span.css("position", "absolute");
+	span.css("top", 0);
+	randomPercent       = randomNumber(100)+"%";    //concatenation
+	span.css("left", randomPercent); 
+	span.html(letterpick())
+	
+	span.appendTo("body");
+ 	
+ 	return span;
+}
+function makeLetterFall() {
+
+var letterElement = pickposition();
+  
+  
+  var colors = ["red", "green", "blue","pink"];
+  randomPercent       = randomNumber(4);
+  
+  letterElement.css("color", colors[randomPercent]);
+  
+  $("#draggable").draggable({axis:'x'});
+  
+  letterElement.animate({"top":"95%"}, 5000,function()
+  {
+		  var x=letterElement.position();
+			  var l=x.left;
+			  var p=$("div:first");
+			   var p1=p.position();
+			   var d1=p1.left;
+               
+			   if(l>=d1 && l<=(d1+150))
+			   {
+				  $("#draggable").append(letterElement.text());
+				  count=count+1;
+			  }
+if(count>50)
+{
+count=count+2;
+}
+if(count>100)
+{
+count=count+3;
+}
+	  
+			  letterElement.fadeOut();
+			  $("#draggable").css("overflow","scroll");
+			  document.getElementById("one").innerHTML = count.toString();
+
+
+  });
+
+  
+}
+
+$(document).on();
+
+//make a new letter every second
+setInterval(makeLetterFall, 1000);
+var count=0;
+</script>
+<body>
+<div id="draggable" class="ui-widget-content"></div>
+
+  <span id="droppable"></span>
+  Score : <div id="one"></div>
+</body>
+</html>
+
